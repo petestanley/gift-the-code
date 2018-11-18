@@ -20,6 +20,14 @@ const promisify = foo => new Promise((resolve, reject) => {
   })
 })
 
+const getBanners = userId => promisify(callback => dynamoDb.get({
+  TableName: process.env.DYNAMODB_TABLE,
+  Key: { userId },
+}, callback)))
+.then(result => {
+
+})
+
 // This method just inserts the user's first name into the greeting message.
 const getGreeting = firstName => promisify(callback =>
   dynamoDb.get({
