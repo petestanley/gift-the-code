@@ -12,6 +12,7 @@ RUN set -ex && \
       openjdk8-jre
 
 RUN set -ex && \
+    npm install && \
     npm cache clean --force
 COPY ./ /app/
 

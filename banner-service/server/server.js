@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 const expressWinston = require('express-winston')
 const routes = require('./routes')
 const winston = require('winston')
+const path = require('path')
 const app = express()
 
 app.disable('x-powered-by')
@@ -26,12 +27,8 @@ app.use(expressWinston.logger({
       ignoreRoute: function (req, res) { return false; } // optional: allows to skip some log messages based on request and/or response
     }))
 
+app.use('/static', express.static(path.resolve(__dirname, '../public')))
 app.use(routes)
 
-app.route('/banners/:userId').get((req,res)=>{
-
-
-
-})
 
 module.exports = http.createServer(app)

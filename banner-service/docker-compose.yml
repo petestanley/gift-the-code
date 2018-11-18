@@ -10,7 +10,9 @@ services:
     depends_on:
       - redis
     volumes:
-      - ./src:/app/src
+      - ./server:/app/server
+      - ./public:/app/public
+      - ./ui:/app/ui
     command: run dev
     depends_on:
       - redis
