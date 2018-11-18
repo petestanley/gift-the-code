@@ -6,23 +6,23 @@ const handler = async (request, response) => {
 
   const categories = category.split(",")
 
+
   const promiseArray = categories.map(async (cate)=>{
     const keys = await db.searchKey(`${cate}-*`)
     const items = await db.retrieve(keys)
-    return {
-      data: items,
-      category: cate
-    }
+    return items.map(item=>JSON.parse(item))
   })
 
   const bannerObjs = await Promise.all(promiseArray)
 
-  const responseData =  bannerObjs.reduce((acc, item)=>{
-      acc[item.category] = JSON.parse(item.data)
-      return acc
-  }, {})
+  const data = bannerObjs.reduce((acc,item)=>{
+    acc = acc.concat(item)
+    return acc
+  },[]).sort((a,b)=>a.createdAt - b.createdAt )
 
-  response.json(responseData)
+  response.json({
+    data
+  })
 }
 
 module.exports = handler

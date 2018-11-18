@@ -13,6 +13,7 @@ const handler = async (request, response) => {
     const id = `${category}-${createdAt}`
     const data = {
         id,
+        category,
         content,
         createdAt,
         updatedAt,
