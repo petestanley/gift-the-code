@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -7,55 +6,86 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import Input from '@material-ui/core/Input';
+import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
 
-const styles = theme => ({
-  root: {
-    width: '100%',
-    marginTop: theme.spacing.unit * 3,
-    overflowX: 'auto',
-  },
-  table: {
-    minWidth: 700,
-  },
-});
+const categorySelections = [
+  'prostate_cancer',
+  'testicular_cancer',
+  'mental_health'
+]
 
-let id = 0;
-function createData(name, calories, fat, carbs, protein) {
-  id += 1;
-  return { id, name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
-
+const getUrl = 'http://localhost:4000/banners?category=prostate_cancer,testicular_cancer,mental_health'
+const postUrl = 'http://localhost:4000/banners'
 
 class Page extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      data : []
+      data : [],
+      content: "",
+      category:'prostate_cancer'
     }
   }
 
+
+
   componentDidMount() {
-    fetch('http://localhost:4000/banners?category=prostate_cancer,testicular_cancer,mental_health')
+    fetch(getUrl)
     .then(result=>result.json())
     .then(json=>{
-      console.log(json)
       this.setState({
         data: json.data
       })
     })
   }
 
+  onSubmit() {
+
+    fetch(postUrl,{
+      method: 'POST',
+      headers: {
+              "Content-Type": "application/json; charset=utf-8",
+      },
+      body: JSON.stringify({
+        content: this.state.content,
+        category: this.state.category
+      })
+    })
+    .then((response)=>{
+      if(response.ok){
+        return Promise.resolve()
+      }
+      return Promise.reject()
+    })
+    .then(()=>fetch(getUrl))
+    .then(result=>result.json())
+    .then(json=>{
+      this.setState({
+        data: json.data
+      })
+    })
+
+  }
+
+  onCategoryChange(value) {
+    this.setState({
+      category: value
+    })
+  }
+
+  onContentChange (value) {
+    this.setState({
+      content: value
+    })
+  }
+
   render(){
   return (
+    <div>
     <Paper >
       <Table>
         <TableHead>
@@ -84,6 +114,48 @@ class Page extends Component {
         </TableBody>
       </Table>
     </Paper>
+
+    <Paper>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Category</TableCell>
+            <TableCell>Contents</TableCell>
+            <TableCell>Submit</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          <TableRow >
+              <TableCell component="th" scope="row">
+                <TextField
+                    select
+                    variant="filled"
+                    value={this.state.category}
+                    onChange={(event)=>{this.onCategoryChange(event.target.value)}}
+                  >
+                    {categorySelections.map(option => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+              </TableCell>
+              <TableCell>
+                <Input
+                  onChange = {(event)=>this.onContentChange(event.target.value)}
+                />
+              </TableCell>
+              <TableCell>
+                <Button variant="contained" color="primary" onClick={this.onSubmit.bind(this)}>
+                  Submit
+                </Button>
+              </TableCell>
+            </TableRow>
+        </TableBody>
+      </Table>
+    </Paper>
+
+    </div>
   )
 }
 }

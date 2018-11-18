@@ -6,7 +6,6 @@
     "dev": "npm run build && npm run start:development",
     "build": "./node_modules/.bin/webpack --config webpack.config.js",
     "start:development": "npm run start:service:development",
-    "start:ui:development": "npm run build && ./node_modules/.bin/webpack-dev-server",
     "start:service:development": "APP_ENV=development NODE_ENV=development nodemon -w server server/index.js"
   },
   "author": "",

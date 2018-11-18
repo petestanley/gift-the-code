@@ -4,5 +4,8 @@ module.exports = {
   port,
   datastore: {
     host: 'redis'
-  }
+  },
+  bodyParser: {
+    limit: '100kb'
+  },
 }
