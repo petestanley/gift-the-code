@@ -18,7 +18,7 @@ const handler = async (request, response) => {
   const data = bannerObjs.reduce((acc,item)=>{
     acc = acc.concat(item)
     return acc
-  },[]).sort((a,b)=>a.createdAt - b.createdAt )
+  },[]).sort((a,b)=>b.createdAt - a.createdAt )
 
   response.json({
     data

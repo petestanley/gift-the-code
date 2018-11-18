@@ -5,7 +5,10 @@ const CleanWebpackPlugin = require('clean-webpack-plugin')
 const outputFolder = path.resolve(__dirname, 'public')
 module.exports = {
   mode: 'development',
-  entry:  path.resolve(__dirname, `ui/index.jsx`),
+  entry:  {
+      admin: path.resolve(__dirname, `ui/index.jsx`),
+      banner: path.resolve(__dirname, `ui/banner/index.jsx`)
+  },
   output: {
     path: outputFolder,
     filename: '[name].bundle.js'
