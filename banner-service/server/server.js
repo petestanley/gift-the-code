@@ -8,8 +8,10 @@ const routes = require('./routes')
 const winston = require('winston')
 const path = require('path')
 const app = express()
+var cors = require('cors')
 
 app.disable('x-powered-by')
+app.use(cors())
 app.use(compression())
 app.use(bodyParser.json(config.bodyParser))
 app.use(expressWinston.logger({
