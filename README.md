@@ -1,6 +1,13 @@
 # gift-the-code
 CapitalOne Hackathon For Charity  - banner service
 
+# brief
+you have to also clone the repo for the profile page,
+https://github.com/crazyo/gift-the-code,
+you shoud bring up service in this repo first,
+then bring up front-end page in that repo.
+
+
 # Usage
 1. `cd banner-service`
 
