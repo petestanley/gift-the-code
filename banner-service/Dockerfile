@@ -4,6 +4,7 @@ FROM node:8-alpine
 
 ENV HOME=/app
 WORKDIR /app
+
 RUN set -ex && \
     adduser node root && \
     chmod g+w /app && \
@@ -11,10 +12,11 @@ RUN set -ex && \
       g++ make python \
       openjdk8-jre
 
+COPY ./ /app/
+
 RUN set -ex && \
     npm install && \
     npm cache clean --force
-COPY ./ /app/
 
 RUN set -ex && \
     chmod -R g=u /app/.config && \
